@@ -42,14 +42,14 @@ const startupController = {
         alternativeMobileNumber,
       });
 
-      await newStartup.save();
+      const startup = await newStartup.save();
 
       const user = await User.findByIdAndUpdate(
         userid,
-        { type: "startup" },
+        { type: "startup", typeid: startup._id },
         { new: true }
       );
-      
+
       console.log(user);
 
       res.json({ msg: "Startup created", data: newStartup });
@@ -63,6 +63,7 @@ const startupController = {
   getAll: async (req, res) => {
     try {
       const startups = await Startup.find();
+      console.log(startups);
       res.json({ msg: "OK", data: startups });
     } catch (error) {
       res

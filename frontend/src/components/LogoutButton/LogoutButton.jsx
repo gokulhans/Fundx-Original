@@ -9,6 +9,7 @@ const LogoutButton = ({ setIsUser }) => {
     setIsUser(false);
     toast.success("Logout Successfully!");
     navigate("/");
+    window.location.reload();
   };
 
   return (

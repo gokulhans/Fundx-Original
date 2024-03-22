@@ -1,4 +1,5 @@
 const Investor = require("../models/investor");
+const User = require("../models/user");
 
 const investorController = {
   create: async (req, res) => {
@@ -16,6 +17,7 @@ const investorController = {
         webSiteUrl,
         summary,
         alternativeMobileNumber,
+        userid,
       } = req.body;
       const newInvestor = new Investor({
         linkedInUrl,
@@ -30,8 +32,16 @@ const investorController = {
         webSiteUrl,
         summary,
         alternativeMobileNumber,
+        userid
       });
-      await newInvestor.save();
+      const investor = await newInvestor.save();
+      console.log(userid);
+      const user = await User.findByIdAndUpdate(
+        userid,
+        { type: "investor", typeid: investor._id },
+        { new: true }
+      );
+      console.log(user);
       res.json({ msg: "Investor created", data: newInvestor });
     } catch (error) {
       res

@@ -53,7 +53,13 @@ const InvestorProfileForm = ({ setisInvestor }) => {
 
   const onSubmit = async (data) => {
     try {
-      const response = await axiosClient.post("/investor", data);
+      const formData = {
+        ...data,
+        userid: localStorage.getItem("userid"),
+      };
+      console.log(formData);
+      const response = await axiosClient.post("/investor", formData);
+      localStorage.setItem("typeid", response.data.data._id);
       toast.success("Investor Profile Completed Successfully !");
       localStorage.setItem("type", "investor");
       setisInvestor(true);

@@ -60,8 +60,10 @@ const StartupProfileForm = ({ setisStartup }) => {
     };
     try {
       const response = await axiosClient.post("/startup", formDataWithImage);
+      console.log(response.data.data._id);
+      localStorage.setItem("typeid", response.data.data._id);
       toast.success("Startup Profile Completed Successfully !");
-      //   const { username, id, token, email } = data.data;
+      // const { username, id, token, email } = data.data;
       localStorage.setItem("type", "startup");
       setisStartup(true);
       navigate("/");

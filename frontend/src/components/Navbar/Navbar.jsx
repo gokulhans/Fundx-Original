@@ -6,7 +6,18 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import DarkModeToggler from "../DarkModeToggler/DarkModeToggler";
 import LogoutButton from "../LogoutButton/LogoutButton";
 
-const Navbar = ({ isUser, setIsUser }) => {
+const Navbar = ({
+  isUser,
+  setIsUser,
+  isAdmin,
+  isSubAdmin,
+  isStartup,
+  isInvestor,
+  setisAdmin,
+  setisSubAdmin,
+  setisStartup,
+  setisInvestor,
+}) => {
   return (
     <>
       <header className="fixed top-0 left-0 flex h-16 w-full shrink-0 items-center px-4 md:px-6 z-50 bg-blue-50/70 dark:bg-gray-900/70">
@@ -17,8 +28,14 @@ const Navbar = ({ isUser, setIsUser }) => {
           </span>
         </Link>
         <div className="ml-auto flex gap-2">
-          {!isUser ? (
+          {!isUser && !isAdmin && !isSubAdmin && !isStartup && !isInvestor ? (
             <>
+              <Link to={"/admin"}>
+                <Button variant="outline">Admin</Button>
+              </Link>
+              <Link to={"/subadmin"}>
+                <Button variant="outline">SubAdmin</Button>
+              </Link>
               <Link to={"/signin"}>
                 <Button variant="outline">Sign in</Button>
               </Link>
@@ -28,7 +45,7 @@ const Navbar = ({ isUser, setIsUser }) => {
             </>
           ) : (
             <>
-              <div className="">
+              {/* <div className="">
                 <form className="relative">
                   <SearchIcon className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500 dark:text-gray-400" />
                   <Input
@@ -38,16 +55,20 @@ const Navbar = ({ isUser, setIsUser }) => {
                     type="search"
                   />
                 </form>
-              </div>
-              <Avatar className="h-9 w-9 cursor-pointer" >
+              </div> */}
+              {/* <Avatar className="h-9 w-9 cursor-pointer">
                 <AvatarImage alt="User Avatar" src="/placeholder-avatar.jpg" />
                 <AvatarFallback>
-                  <b >
-                    {localStorage.getItem("username") &&
-                      localStorage.getItem("username").charAt(0).toUpperCase() || "P"}
+                  <b>
+                    {(localStorage.getItem("username") &&
+                      localStorage
+                        .getItem("username")
+                        .charAt(0)
+                        .toUpperCase()) ||
+                      "P"}
                   </b>
                 </AvatarFallback>
-              </Avatar>
+              </Avatar> */}
               <LogoutButton setIsUser={setIsUser} />
             </>
           )}

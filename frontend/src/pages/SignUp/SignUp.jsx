@@ -3,10 +3,14 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import axiosClient from "@/util/axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 const SignUp = ({ setIsUser }) => {
-  const [errorMessage, setErrorMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [showError, setShowError] = useState(null);
   const navigate = useNavigate();
 
   // Define Yup schema for form validation
@@ -37,6 +41,7 @@ const SignUp = ({ setIsUser }) => {
 
   // Handle form submission
   const onSubmit = async (data) => {
+    setIsLoading(true);
     try {
       const response = await axiosClient.post("/user/signup", data);
       console.log(response);
@@ -45,97 +50,96 @@ const SignUp = ({ setIsUser }) => {
       setIsUser(true);
       localStorage.setItem("isUser", true);
       console.log("Form submitted successfully");
+      setIsLoading(false);
       navigate("/");
       // Reset form fields or perform any other actions upon successful submission
     } catch (error) {
       console.error("Error submitting form data:", error);
-      setErrorMessage(error.response.data.message);
-      // Handle error, show message to user, etc.
+      setShowError(error.response.data.message);
+      setIsLoading(false);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="max-w-sm mx-auto mt-8">
-      <div className="mb-4">
-        <label htmlFor="name" className="block text-gray-700">
-          Name
-        </label>
-        <input
-          type="text"
-          id="name"
-          {...register("name")} // Register input with react-hook-form
-          className={`form-input mt-1 block w-full ${
-            errors.name ? "border-red-500" : ""
-          }`}
-        />
-        {errors.name && (
-          <div className="text-red-500 text-sm mt-1">{errors.name.message}</div>
-        )}
-      </div>
-      <div className="mb-4">
-        <label htmlFor="email" className="block text-gray-700">
-          Email
-        </label>
-        <input
-          type="email"
-          id="email"
-          {...register("email")}
-          className={`form-input mt-1 block w-full ${
-            errors.email ? "border-red-500" : ""
-          }`}
-        />
-        {errors.email && (
-          <div className="text-red-500 text-sm mt-1">
-            {errors.email.message}
+    <>
+      <div className="mx-auto max-w-md space-y-6">
+        <div className="space-y-2 text-center">
+          <h1 className="text-3xl font-bold">Sign Up</h1>
+          <p className="text-gray-500 dark:text-gray-400">
+            Enter your information to create an account
+          </p>
+        </div>
+        <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
+          <div className="space-y-2">
+            <Label htmlFor="first-name">Name</Label>
+            <Input
+              id="first-name"
+              placeholder="John"
+              {...register("name")}
+              required
+            />
+            <p className="text-xs text-red-600 dark:text-red-500 mt-2">
+              {errors.name?.message}
+            </p>
           </div>
-        )}
-      </div>
-      <div className="mb-4">
-        <label htmlFor="password" className="block text-gray-700">
-          Password
-        </label>
-        <input
-          type="password"
-          id="password"
-          {...register("password")}
-          className={`form-input mt-1 block w-full ${
-            errors.password ? "border-red-500" : ""
-          }`}
-        />
-        {errors.password && (
-          <div className="text-red-500 text-sm mt-1">
-            {errors.password.message}
+          <div className="space-y-2">
+            <Label htmlFor="email">Email</Label>
+            <Input
+              id="email"
+              placeholder="john@example.com"
+              required
+              type="email"
+              {...register("email")}
+            />
+            <p className="text-xs text-red-600 dark:text-red-500 mt-2">
+              {errors.email?.message}
+            </p>
           </div>
-        )}
-      </div>
-      <div className="mb-4">
-        <label htmlFor="confirmPassword" className="block text-gray-700">
-          Confirm Password
-        </label>
-        <input
-          type="password"
-          id="confirmPassword"
-          {...register("confirmPassword")}
-          className={`form-input mt-1 block w-full ${
-            errors.confirmPassword ? "border-red-500" : ""
-          }`}
-        />
-        {errors.confirmPassword && (
-          <div className="text-red-500 text-sm mt-1">
-            {errors.confirmPassword.message}
+          <div className="space-y-2">
+            <Label htmlFor="password">Password</Label>
+            <Input
+              id="password"
+              placeholder="********"
+              required
+              type="password"
+              {...register("password")}
+            />
+            <p className="text-xs text-red-600 dark:text-red-500 mt-2">
+              {errors.password?.message}
+            </p>
           </div>
-        )}
+          <div className="space-y-2">
+            <Label htmlFor="confirm-password">Confirm Password</Label>
+            <Input
+              id="confirm-password"
+              placeholder="********"
+              required
+              type="password"
+              {...register("confirmPassword")}
+            />
+            <p className="text-xs text-red-600 dark:text-red-500 mt-2">
+              {errors.confirmPassword?.message}
+            </p>
+          </div>
+          <Button className="w-full" type="submit" disabled={isLoading}>
+            Sign Up
+          </Button>
+          {showError && (
+            <p className="text-xs text-red-600 dark:text-red-500 mt-2">
+              {showError}
+            </p>
+          )}
+        </form>
+        <div className="flex justify-center items-center">
+          <Link
+            className="text-sm underline text-gray-500 dark:text-gray-400"
+            to={"/signin"}
+          >
+            Already a User? Sign In
+          </Link>
+        </div>
       </div>
-      <div className="text-center">
-        <button
-          type="submit"
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-        >
-          Sign Up
-        </button>
-      </div>
-      {errorMessage && <div className="text-red-500 mt-2">{errorMessage}</div>}
-    </form>
+    </>
   );
 };
 
