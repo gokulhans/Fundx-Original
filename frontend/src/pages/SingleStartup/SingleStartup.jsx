@@ -29,7 +29,7 @@ const SingleStartup = () => {
   const Connect = async (userid) => {
     console.log("called");
     const response = await axiosClient.post("/connect", {
-      investor: localStorage.getItem("userid"),
+      investor: localStorage.getItem("typeid"),
       startup: userid,
     });
     toast.success("Connection Request Sent successfully");
@@ -112,7 +112,7 @@ const SingleStartup = () => {
               <Button
                 size="lg"
                 onClick={() => {
-                  Connect(startup.userid);
+                  Connect(startup._id);
                 }}
               >
                 Connect

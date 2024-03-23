@@ -27,7 +27,7 @@ const SingleInvestor = () => {
 
   const Connect = async (userid) => {
     const response = await axiosClient.post("/connect", {
-      startup: localStorage.getItem("userid"),
+      startup: localStorage.getItem("typeid"),
       investor: userid,
     });
     if (response.status === 200) {
@@ -82,7 +82,7 @@ const SingleInvestor = () => {
             </p>
             {/* Add more details here */}
             <div className="mt-auto">
-              <Button size="lg" onClick={() => Connect(investor.userid)}>
+              <Button size="lg" onClick={() => Connect(investor._id)}>
                 Connect With {investor.firstname}
               </Button>
             </div>

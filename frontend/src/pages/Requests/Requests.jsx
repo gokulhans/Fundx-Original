@@ -11,11 +11,11 @@ const Requests = ({ userId }) => {
         let response;
         if (localStorage.getItem("type") === "investor") {
           response = await axiosClient.get(
-            `/connect/investor/${localStorage.getItem("userid")}`
+            `/connect/investor/${localStorage.getItem("typeid")}`
           );
         } else {
           response = await axiosClient.get(
-            `/connect/startup/${localStorage.getItem("userid")}`
+            `/connect/startup/${localStorage.getItem("typeid")}`
           );
         }
 
@@ -36,9 +36,7 @@ const Requests = ({ userId }) => {
           <li key={connection._id}>
             {/* Display connection details */}
             {/* For example: */}
-            <p>Startup: {connection.startupName}</p>
-            <p>Investor: {connection.investorName}</p>
-            <p>Status: {connection.status}</p>
+            <p>Investor: {connection.investor.firstname}</p>
           </li>
         ))}
       </ul>

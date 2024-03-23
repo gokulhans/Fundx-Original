@@ -76,12 +76,12 @@ const Sidebar = () => {
               >
                 All Investors
               </Link>
-              {/* <Link
+              <Link
                 to={`/startup/${localStorage.getItem("typeid")}`}
                 className="text-white text-sm font-bold p-1 px-3 rounded border shadow-md bg-gray-700"
               >
                 Profile
-              </Link> */}
+              </Link>
               {/* <Link className="text-white text-sm font-bold p-1 px-3 rounded border shadow-md bg-gray-700">
                 Edit Profile
               </Link> */}

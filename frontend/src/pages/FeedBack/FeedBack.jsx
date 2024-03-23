@@ -112,7 +112,7 @@ const FeedBack = () => {
           </CardFooter>
         </form>
       </Card>
-      <Label htmlFor="complaint" className="p-2 font-bold text-lg my-8">
+      {/* <Label htmlFor="complaint" className="p-2 font-bold text-lg my-8">
         All Feedbacks
       </Label>
       {feedbacks.map((feedback, index) => (
@@ -121,7 +121,7 @@ const FeedBack = () => {
             <p>{feedback.feedback}</p>
           </CardHeader>
         </Card>
-      ))}
+      ))} */}
     </>
   );
 };

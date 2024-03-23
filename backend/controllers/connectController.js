@@ -1,5 +1,6 @@
 const Connect = require("../models/connect");
 const Startup = require("../models/startup");
+const Investor = require("../models/investor");
 
 const connectController = {
   // Create a new connect
@@ -7,7 +8,8 @@ const connectController = {
     try {
       const { startup, investor } = req.body;
       const newConnect = new Connect({ startup, investor });
-      await newConnect.save();
+      let connection = await newConnect.save();
+      console.log(connection);
       res.status(201).json({ msg: "Connect created", data: newConnect });
     } catch (error) {
       res
@@ -22,19 +24,19 @@ const connectController = {
       // Extract user ID and type from request params
       const { id, type } = req.params;
 
-      let data;
+      console.log(id, type);
 
-      // Check the user type
+      let data;
       if (type === "investor") {
-        // Find connections where the investor ID matches the provided user ID
-        data = await Connect.find({ investor: id }).populate("startup");
+        data = await Connect.find({ investor: id });
+        data = await Investor.populate(data, { path: "startup" });
       } else if (type === "startup") {
-        // Find startup details where the userid matches the provided user ID
-        data = await Startup.find({ userid: id });
-        console.log(data);
+        data = await Connect.find({ startup: id });
+        data = await Connect.populate(data, { path: "investor" });
       }
 
-      // Send success response with the retrieved data
+      console.log(data);
+
       res.status(200).json(data);
     } catch (error) {
       console.error("Error getting data by user ID:", error);
